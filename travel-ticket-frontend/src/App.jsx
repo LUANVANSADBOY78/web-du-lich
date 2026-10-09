@@ -11,12 +11,15 @@ import Checkout from "./pages/Checkout";
 import MyBookings from "./pages/MyBookings";
 import Flights from "./pages/Flights";
 import TravelMap from "./pages/TravelMap";
+import AIChat from "./pages/AIChat";
+import Trains from "./pages/Trains";
 
 import AdminLayout from "./admin/components/AdminLayout";
 import Dashboard from "./admin/Dashboard";
 import Attractions from "./admin/Attractions";
 import TourManagement from "./admin/TourManagement";
 import TourCollections from "./admin/TourCollections";
+import Destinations from "./admin/Destinations";
 import TourDepartures from "./admin/TourDepartures";
 import TourBookings from "./admin/TourBookings";
 import TourGuides from "./admin/TourGuides";
@@ -27,6 +30,12 @@ import BookingManagement from "./admin/BookingManagement";
 import AIChatConversations from "./admin/AIChatConversations";
 import AIKnowledgeBase from "./admin/AIKnowledgeBase";
 import AISettings from "./admin/AISettings";
+import Customers from "./admin/Customers";
+import Vouchers from "./admin/Vouchers";
+import Reviews from "./admin/Reviews";
+import SupportTickets from "./admin/SupportTickets";
+import Reports from "./admin/Reports";
+import ActivityLogs from "./admin/ActivityLogs";
 
 const PlaceholderPage = ({ title }) => (
   <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 m-6">
@@ -49,6 +58,8 @@ function App() {
         <Route path="travel-map" element={<TravelMap />} />
         <Route path="flights" element={<Flights />} />
         <Route path="ve-may-bay" element={<Flights />} />
+        <Route path="trains" element={<Trains />} />
+        <Route path="ve-tau" element={<Trains />} />
         <Route path="ai-trip-planner" element={<div className="p-10 text-center"><h2 className="text-2xl font-bold">AI Trip Planner</h2><p>Đang tải giao diện AI lên lịch trình...</p></div>} />
         <Route path="compare-tours" element={<div className="p-10 text-center"><h2 className="text-2xl font-bold">So sánh Tour</h2><p>Đang xây dựng bảng so sánh 3 tour...</p></div>} />
         <Route path="my-trips" element={<div className="p-10 text-center"><h2 className="text-2xl font-bold">My Trips</h2><p>Trang tổng hợp mọi booking của chuyến đi.</p></div>} />
@@ -64,6 +75,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Login />} />
         <Route path="support" element={<PlaceholderPage title="Trung Tâm Hỗ Trợ Khách Hàng" />} />
+        <Route path="ai-chat" element={<AIChat />} />
       </Route>
       
       {/* Admin Management System Routes */}
@@ -73,7 +85,7 @@ function App() {
         {/* TOUR */}
         <Route path="tours" element={<TourManagement />} />
         <Route path="tour-categories" element={<TourCollections />} />
-        <Route path="destinations" element={<PlaceholderPage title="Điểm đến" />} />
+        <Route path="destinations" element={<Destinations />} />
         <Route path="tour-itineraries" element={<PlaceholderPage title="Lịch trình" />} />
         <Route path="tour-departures" element={<TourDepartures />} />
         <Route path="tour-inventory" element={<PlaceholderPage title="Kho chỗ" />} />
@@ -111,26 +123,34 @@ function App() {
         <Route path="referral" element={<PlaceholderPage title="Referral" />} />
 
         {/* USERS */}
-        <Route path="customers" element={<PlaceholderPage title="Customers" />} />
-        <Route path="staff" element={<PlaceholderPage title="Staff" />} />
-        <Route path="partners" element={<PlaceholderPage title="Partners" />} />
-        <Route path="tour-guides-users" element={<PlaceholderPage title="Tour Guides (Users)" />} />
+        <Route path="customers" element={<Customers />} />
+        <Route path="staff" element={<PlaceholderPage title="Nhân viên - Staff" />} />
+        <Route path="partners" element={<PlaceholderPage title="Đối tác - Partners" />} />
+        <Route path="tour-guides-users" element={<PlaceholderPage title="Tour Guides" />} />
+
+        {/* MARKETING */}
+        <Route path="vouchers" element={<Vouchers />} />
+        <Route path="flash-sales" element={<PlaceholderPage title="Flash Sale" />} />
+        <Route path="combos" element={<PlaceholderPage title="Combo du lịch" />} />
+        <Route path="banners" element={<PlaceholderPage title="Banner & Quảng cáo" />} />
+        <Route path="membership" element={<PlaceholderPage title="Membership" />} />
+        <Route path="referral" element={<PlaceholderPage title="Referral Program" />} />
 
         {/* CONTENT */}
-        <Route path="reviews" element={<PlaceholderPage title="Reviews" />} />
+        <Route path="reviews" element={<Reviews />} />
         <Route path="qna" element={<PlaceholderPage title="Q&A" />} />
         <Route path="blog" element={<PlaceholderPage title="Blog" />} />
         <Route path="faq" element={<PlaceholderPage title="FAQ" />} />
 
         {/* SUPPORT */}
-        <Route path="support-tickets" element={<PlaceholderPage title="Support Ticket" />} />
+        <Route path="support-tickets" element={<SupportTickets />} />
         <Route path="live-chat" element={<PlaceholderPage title="Live Chat" />} />
 
         {/* SYSTEM */}
-        <Route path="reports" element={<TourReports />} />
-        <Route path="roles" element={<PlaceholderPage title="Phân quyền" />} />
-        <Route path="activity-logs" element={<PlaceholderPage title="Nhật ký hoạt động" />} />
-        <Route path="settings" element={<PlaceholderPage title="Cài đặt" />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="roles" element={<PlaceholderPage title="Phân quyền - Roles & Permissions" />} />
+        <Route path="activity-logs" element={<ActivityLogs />} />
+        <Route path="settings" element={<PlaceholderPage title="Cài đặt hệ thống" />} />
       </Route>
       
       {/* Fallback Catch-All Route */}

@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<GoTravel.API.Services.IAIService, GoTravel.API.Services.AIService>();
 builder.Services.AddHealthChecks();
 
 // Configure Entity Framework Core with SQL Server

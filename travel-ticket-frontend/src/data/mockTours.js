@@ -64,7 +64,7 @@ export const MOCK_TOURS = [
     badge: "Tour Bán Chạy",
     isHot: true,
     img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
-    gallery: ["https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800"],
+    gallery: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=800"],
     highlights: ["Canô 4 đảo Nam Phú Quốc", "Tặng chụp ảnh SUP Flycam", "Check-in Grand World Venice", "Khách sạn 4 sao sát biển"],
     departures: [
       { startDate: '2026-10-18', endDate: '2026-10-20', adultPrice: 3890000, childPrice: 2790000, availableSeats: 5, status: 'Còn chỗ' },
@@ -101,7 +101,7 @@ export const MOCK_TOURS = [
     badge: "Hot Deal",
     isHot: true,
     img: "https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&q=80&w=800",
-    gallery: ["https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&q=80&w=800"],
+    gallery: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=800"],
     highlights: ["Bao gồm Visa Hàn Quốc", "Trải nghiệm làm Kimchi & mặc Hanbok", "Thăm Đảo Nami lãng mạn", "Vui chơi Everland"],
     departures: [
       { startDate: '2026-10-20', endDate: '2026-10-25', adultPrice: 14990000, childPrice: 11990000, availableSeats: 6, status: 'Gần hết chỗ' },
@@ -140,7 +140,7 @@ export const MOCK_TOURS = [
     badge: "Tour Cao Cấp",
     isHot: true,
     img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800",
-    gallery: ["https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800"],
+    gallery: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=800"],
     highlights: ["Ngắm Núi Phú Sĩ Trạm 5", "Trải nghiệm Tàu Shinkansen 300km/h", "Tắm khoáng Onsen chuẩn Nhật", "Thưởng thức Bò Kобе thượng hạng"],
     departures: [
       { startDate: '2026-11-01', endDate: '2026-11-06', adultPrice: 26990000, childPrice: 21990000, availableSeats: 4, status: 'Gần hết chỗ' }
@@ -179,7 +179,7 @@ export const MOCK_TOURS = [
     badge: "Du Thuyền 5 Star",
     isHot: true,
     img: "https://images.unsplash.com/photo-1500514960449-0648c66e2c38?auto=format&fit=crop&q=80&w=800",
-    gallery: ["https://images.unsplash.com/photo-1500514960449-0648c66e2c38?auto=format&fit=crop&q=80&w=800"],
+    gallery: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=800"],
     highlights: ["Siêu du thuyền 18 tầng đỉnh cao thế giới", "Phòng Balcony hướng biển sang trọng", "Ăn uống 24/7 hàng chục nhà hàng cao cấp", "Vui chơi lướt sóng, đu quay North Star"],
     departures: [
       { startDate: '2026-11-15', endDate: '2026-11-19', adultPrice: 18990000, childPrice: 14990000, availableSeats: 6, status: 'Còn chỗ' }

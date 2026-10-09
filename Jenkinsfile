@@ -23,6 +23,7 @@ pipeline {
             steps {
                 sh 'docker --version'
                 sh 'docker compose version'
+                sh 'docker compose -f docker-compose.yml -f docker-compose.production.yml config'
             }
         }
 
@@ -62,6 +63,9 @@ pipeline {
                 script {
                     // Wait for SQL Server and Backend to stabilize
                     sleep time: 15, unit: 'SECONDS'
+                    
+                    // Show running containers
+                    sh 'docker compose -f docker-compose.yml -f docker-compose.production.yml ps'
                     
                     // Verify backend is reachable
                     sh 'curl -f http://localhost:8080/health'

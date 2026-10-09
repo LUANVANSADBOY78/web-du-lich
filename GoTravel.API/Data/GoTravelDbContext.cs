@@ -12,6 +12,10 @@ namespace GoTravel.API.Data
         public DbSet<Tour> Tours { get; set; }
         public DbSet<TourDeparture> TourDepartures { get; set; }
         public DbSet<Destination> Destinations { get; set; }
+        
+        // AI Chatbot
+        public DbSet<ChatConversation> ChatConversations { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

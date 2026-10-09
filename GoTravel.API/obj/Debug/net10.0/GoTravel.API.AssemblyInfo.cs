@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GoTravel.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d20d3726122b55cdb8fe78644d173122df7d2d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("GoTravel.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GoTravel.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

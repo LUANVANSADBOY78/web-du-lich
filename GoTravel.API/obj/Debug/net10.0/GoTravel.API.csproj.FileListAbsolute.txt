@@ -168,3 +168,6 @@ D:\webdulich\GoTravel.API\obj\Debug\net10.0\refint\GoTravel.API.dll
 D:\webdulich\GoTravel.API\obj\Debug\net10.0\GoTravel.API.pdb
 D:\webdulich\GoTravel.API\obj\Debug\net10.0\GoTravel.API.genruntimeconfig.cache
 D:\webdulich\GoTravel.API\obj\Debug\net10.0\ref\GoTravel.API.dll
+D:\webdulich\GoTravel.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\webdulich\GoTravel.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\webdulich\GoTravel.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll

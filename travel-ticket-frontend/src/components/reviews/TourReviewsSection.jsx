@@ -121,6 +121,10 @@ const TourReviewsSection = ({ tour }) => {
         images: imageUrl.trim() ? [imageUrl.trim()] : []
       };
 
+      if (!tour?.id) {
+        toast.error('Không tìm thấy thông tin tour');
+        return;
+      }
       const updated = saveReviewForTour(tour.id, newReviewData);
       setReviews(updated);
       setSummary(calculateRatingSummary(updated));
@@ -144,6 +148,7 @@ const TourReviewsSection = ({ tour }) => {
 
   // Handle delete user review
   const handleDeleteUserReview = (reviewId) => {
+    if (!tour?.id) return;
     if (window.confirm('Bạn có chắc chắn muốn xóa đánh giá này của mình?')) {
       const updated = deleteUserReview(tour.id, reviewId);
       setReviews(updated);

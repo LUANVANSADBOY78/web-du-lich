@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Search, Filter, Edit, Trash2, X, AlertTriangle } from "lucide-react";
+import { Plus, Search, Filter, Edit, Trash2, X, AlertTriangle, MapPin } from "lucide-react";
 import { toast } from "react-toastify";
 
 // Local storage helper

@@ -38,7 +38,7 @@ const getDefaultItinerary = (tour) => {
 };
 
 const TourDetail = () => {
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const navigate = useNavigate();
 
   const [tour, setTour] = useState(null);
@@ -47,12 +47,15 @@ const TourDetail = () => {
   const [childQty, setChildQty] = useState(0);
 
   useEffect(() => {
-    const found = MOCK_TOURS.find(t => t.id === id) || MOCK_TOURS.find(t => t.code === id) || MOCK_TOURS[0];
-    setTour(found);
-    if (found.departures && found.departures.length > 0) {
-      setSelectedDate(found.departures[0].startDate);
-    } else {
-      setSelectedDate('2026-10-25');
+    const key = id || slug;
+    const found = MOCK_TOURS.find(t => t.id === key || t.code === key || t.slug === key) || MOCK_TOURS[0];
+    if (found) {
+      setTour(found);
+      if (found.departures && found.departures.length > 0) {
+        setSelectedDate(found.departures[0].startDate);
+      } else {
+        setSelectedDate('2026-10-25');
+      }
     }
 
     if (window.location.hash === '#danh-gia') {
@@ -60,7 +63,7 @@ const TourDetail = () => {
         document.getElementById('danh-gia')?.scrollIntoView({ behavior: 'smooth' });
       }, 400);
     }
-  }, [id]);
+  }, [id, slug]);
 
   if (!tour) {
     return (

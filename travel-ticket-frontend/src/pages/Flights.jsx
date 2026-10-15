@@ -3,7 +3,7 @@ import {
   Plane, Calendar, Users, Search, ArrowRightLeft, MapPin, Filter, 
   ArrowRight, Clock, ShieldCheck, CheckCircle, Sparkles, ChevronDown, 
   ChevronUp, PhoneCall, HelpCircle, Luggage, Coffee, Info, X,
-  GraduationCap, Home, Briefcase, Globe, Award, AlertCircle, ShoppingCart
+  GraduationCap, Home, Briefcase, Globe, Award, AlertCircle, ShoppingCart, ChevronRight
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';

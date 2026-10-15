@@ -30,6 +30,9 @@ namespace GoTravel.API.Data
 
             modelBuilder.Entity<Tour>().HasIndex(t => t.Slug).IsUnique();
             modelBuilder.Entity<Tour>().HasIndex(t => t.Code).IsUnique();
+
+            modelBuilder.Entity<TourDestination>()
+                .HasKey(td => new { td.TourId, td.DestinationId });
         }
     }
 }

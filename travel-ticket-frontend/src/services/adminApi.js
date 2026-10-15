@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5106');
 
 const api = axios.create({ baseURL: BASE_URL });
 
@@ -23,6 +23,7 @@ export const adminApi = {
 
   // Bookings
   getBookings: (params) => api.get('/api/admin/bookings', { params }),
+  createBooking: (data) => api.post('/api/admin/bookings', data),
   updateBookingStatus: (id, status) => api.put(`/api/admin/bookings/${id}/status`, { status }),
   deleteBooking: (id) => api.delete(`/api/admin/bookings/${id}`),
 

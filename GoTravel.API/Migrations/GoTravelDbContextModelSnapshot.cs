@@ -198,10 +198,6 @@ namespace GoTravel.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Destination")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("DurationDays")
                         .HasColumnType("int");
 
@@ -229,6 +225,12 @@ namespace GoTravel.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TourCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TourPartnerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Transport")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -241,7 +243,41 @@ namespace GoTravel.API.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
+                    b.HasIndex("TourCategoryId");
+
+                    b.HasIndex("TourPartnerId");
+
                     b.ToTable("Tours");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("TourCategory");
                 });
 
             modelBuilder.Entity("GoTravel.API.Entities.TourDeparture", b =>
@@ -285,6 +321,293 @@ namespace GoTravel.API.Migrations
                     b.HasIndex("TourId");
 
                     b.ToTable("TourDepartures");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourDestination", b =>
+                {
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TourId", "DestinationId");
+
+                    b.HasIndex("DestinationId");
+
+                    b.ToTable("TourDestination");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourGuide", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TourGuide");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourGuideAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("TourDepartureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourGuideId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourDepartureId");
+
+                    b.HasIndex("TourGuideId");
+
+                    b.ToTable("TourGuideAssignment");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourHighlight", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourHighlight");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourHomeSection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TourHomeSection");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourHomeSectionItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourHomeSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourHomeSectionId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourHomeSectionItem");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourImage");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourInventory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Available")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalAllocated")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourDepartureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourDepartureId")
+                        .IsUnique();
+
+                    b.ToTable("TourInventory");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourItinerary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Accommodation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DayNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Meals")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourItinerary");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourPartner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContactInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TourPartner");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PriceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TourDepartureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourDepartureId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourPrice");
                 });
 
             modelBuilder.Entity("GoTravel.API.Entities.User", b =>
@@ -351,6 +674,30 @@ namespace GoTravel.API.Migrations
                     b.Navigation("Conversation");
                 });
 
+            modelBuilder.Entity("GoTravel.API.Entities.Tour", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.TourCategory", "TourCategory")
+                        .WithMany("Tours")
+                        .HasForeignKey("TourCategoryId");
+
+                    b.HasOne("GoTravel.API.Entities.TourPartner", "TourPartner")
+                        .WithMany("Tours")
+                        .HasForeignKey("TourPartnerId");
+
+                    b.Navigation("TourCategory");
+
+                    b.Navigation("TourPartner");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourCategory", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.TourCategory", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("GoTravel.API.Entities.TourDeparture", b =>
                 {
                     b.HasOne("GoTravel.API.Entities.Tour", "Tour")
@@ -360,6 +707,124 @@ namespace GoTravel.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourDestination", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.Destination", "Destination")
+                        .WithMany("TourDestinations")
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoTravel.API.Entities.Tour", "Tour")
+                        .WithMany("TourDestinations")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Destination");
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourGuideAssignment", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.TourDeparture", "TourDeparture")
+                        .WithMany("GuideAssignments")
+                        .HasForeignKey("TourDepartureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoTravel.API.Entities.TourGuide", "TourGuide")
+                        .WithMany("Assignments")
+                        .HasForeignKey("TourGuideId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TourDeparture");
+
+                    b.Navigation("TourGuide");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourHighlight", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.Tour", "Tour")
+                        .WithMany("Highlights")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourHomeSectionItem", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.TourHomeSection", "TourHomeSection")
+                        .WithMany("Items")
+                        .HasForeignKey("TourHomeSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoTravel.API.Entities.Tour", "Tour")
+                        .WithMany("HomeSectionItems")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+
+                    b.Navigation("TourHomeSection");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourImage", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.Tour", "Tour")
+                        .WithMany("Images")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourInventory", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.TourDeparture", "TourDeparture")
+                        .WithOne("Inventory")
+                        .HasForeignKey("GoTravel.API.Entities.TourInventory", "TourDepartureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TourDeparture");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourItinerary", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.Tour", "Tour")
+                        .WithMany("Itineraries")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourPrice", b =>
+                {
+                    b.HasOne("GoTravel.API.Entities.TourDeparture", "TourDeparture")
+                        .WithMany()
+                        .HasForeignKey("TourDepartureId");
+
+                    b.HasOne("GoTravel.API.Entities.Tour", "Tour")
+                        .WithMany("Prices")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+
+                    b.Navigation("TourDeparture");
                 });
 
             modelBuilder.Entity("GoTravel.API.Entities.User", b =>
@@ -378,6 +843,11 @@ namespace GoTravel.API.Migrations
                     b.Navigation("Messages");
                 });
 
+            modelBuilder.Entity("GoTravel.API.Entities.Destination", b =>
+                {
+                    b.Navigation("TourDestinations");
+                });
+
             modelBuilder.Entity("GoTravel.API.Entities.Role", b =>
                 {
                     b.Navigation("Users");
@@ -386,6 +856,47 @@ namespace GoTravel.API.Migrations
             modelBuilder.Entity("GoTravel.API.Entities.Tour", b =>
                 {
                     b.Navigation("Departures");
+
+                    b.Navigation("Highlights");
+
+                    b.Navigation("HomeSectionItems");
+
+                    b.Navigation("Images");
+
+                    b.Navigation("Itineraries");
+
+                    b.Navigation("Prices");
+
+                    b.Navigation("TourDestinations");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourCategory", b =>
+                {
+                    b.Navigation("Children");
+
+                    b.Navigation("Tours");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourDeparture", b =>
+                {
+                    b.Navigation("GuideAssignments");
+
+                    b.Navigation("Inventory");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourGuide", b =>
+                {
+                    b.Navigation("Assignments");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourHomeSection", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("GoTravel.API.Entities.TourPartner", b =>
+                {
+                    b.Navigation("Tours");
                 });
 #pragma warning restore 612, 618
         }

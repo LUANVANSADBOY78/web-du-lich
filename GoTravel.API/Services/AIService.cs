@@ -36,7 +36,7 @@ namespace GoTravel.API.Services
             {
                 // In a real system, AI model would request tool call, then we query DB:
                 var daNangTours = await _context.Tours
-                    .Where(t => t.Destination.Contains("Đà Nẵng"))
+                    .Where(t => t.Name.Contains("Đà Nẵng"))
                     .Take(1)
                     .ToListAsync();
                     

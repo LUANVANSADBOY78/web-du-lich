@@ -33,7 +33,7 @@ const Checkout = () => {
 
   const totalAmount = cartItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
 
-  const handleCreateBooking = (e) => {
+  const handleCreateBooking = async (e) => {
     e.preventDefault();
     if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
       toast.error('Vui lòng điền đầy đủ thông tin khách hàng!');
@@ -41,7 +41,9 @@ const Checkout = () => {
     }
 
     const newCode = 'BK' + new Date().getFullYear() + Math.floor(100000 + Math.random() * 900000);
-    const newBooking = {
+    
+    // Fallback data for local storage
+    const localBooking = {
       id: newCode,
       customerName: customerInfo.name,
       email: customerInfo.email,
@@ -54,17 +56,41 @@ const Checkout = () => {
       ticketCode: 'TK' + Math.floor(10000000 + Math.random() * 90000000)
     };
 
-    // Save to my bookings
+    // Prepare API data matching Backend Booking entity
+    const apiBooking = {
+      bookingCode: newCode,
+      customerName: customerInfo.name,
+      customerEmail: customerInfo.email,
+      customerPhone: customerInfo.phone,
+      bookingType: cartItems[0]?.type || 'ticket',
+      tourId: cartItems[0]?.tourId || null,
+      adults: 1,
+      totalAmount: totalAmount,
+      finalAmount: totalAmount,
+      status: 'confirmed',
+      paymentStatus: 'paid',
+      notes: customerInfo.note
+    };
+
+    try {
+      const { adminApi } = await import('../services/adminApi');
+      const res = await adminApi.createBooking(apiBooking);
+      localBooking.id = res.data.bookingCode;
+    } catch (err) {
+      console.warn("Could not save booking to API, fallback to local storage only", err);
+    }
+
+    // Save to my bookings (so user can view it in their UI)
     const myBookings = JSON.parse(localStorage.getItem('goticket_bookings') || '[]');
-    myBookings.unshift(newBooking);
+    myBookings.unshift(localBooking);
     localStorage.setItem('goticket_bookings', JSON.stringify(myBookings));
 
     // Clear cart
     localStorage.removeItem('goticket_cart');
 
-    setBookingCode(newCode);
+    setBookingCode(localBooking.id);
     setIsSuccess(true);
-    toast.success('Đặt vé thành công! Mã đơn hàng: ' + newCode);
+    toast.success('Đặt vé thành công! Mã đơn hàng: ' + localBooking.id);
   };
 
   if (isSuccess) {

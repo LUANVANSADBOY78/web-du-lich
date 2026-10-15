@@ -1,3 +1,6 @@
+﻿using System;
+using System.Collections.Generic;
+
 namespace GoTravel.API.Entities
 {
     public class Tour
@@ -11,7 +14,6 @@ namespace GoTravel.API.Entities
         public int DurationDays { get; set; }
         public int DurationNights { get; set; }
         public string DepartureCity { get; set; } = string.Empty;
-        public string Destination { get; set; } = string.Empty;
         public string Transport { get; set; } = string.Empty;
         
         public decimal AdultPrice { get; set; }
@@ -24,7 +26,19 @@ namespace GoTravel.API.Entities
         public string Status { get; set; } = "Active";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public int? TourCategoryId { get; set; }
+        public TourCategory? TourCategory { get; set; }
+
+        public int? TourPartnerId { get; set; }
+        public TourPartner? TourPartner { get; set; }
+
         public ICollection<TourDeparture> Departures { get; set; } = new List<TourDeparture>();
+        public ICollection<TourDestination> TourDestinations { get; set; } = new List<TourDestination>();
+        public ICollection<TourImage> Images { get; set; } = new List<TourImage>();
+        public ICollection<TourHighlight> Highlights { get; set; } = new List<TourHighlight>();
+        public ICollection<TourItinerary> Itineraries { get; set; } = new List<TourItinerary>();
+        public ICollection<TourPrice> Prices { get; set; } = new List<TourPrice>();
+        public ICollection<TourHomeSectionItem> HomeSectionItems { get; set; } = new List<TourHomeSectionItem>();
     }
 
     public class TourDeparture
@@ -44,5 +58,8 @@ namespace GoTravel.API.Entities
         public int AvailableSeats { get; set; }
         
         public string Status { get; set; } = "Active";
+
+        public TourInventory? Inventory { get; set; }
+        public ICollection<TourGuideAssignment> GuideAssignments { get; set; } = new List<TourGuideAssignment>();
     }
 }

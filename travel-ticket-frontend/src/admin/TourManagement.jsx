@@ -1,33 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Search, Filter, Edit, Trash2, X, AlertTriangle, Compass, MapPin, Clock } from "lucide-react";
 import { toast } from "react-toastify";
+import { adminApi } from "../services/adminApi";
 import { MOCK_TOURS } from "../data/mockTours";
 
-// Local storage helper
-const useLocalStorage = (key, initialValue) => {
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      return initialValue;
-    }
-  });
-
-  const setValue = (value) => {
-    try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  return [storedValue, setValue];
-};
-
 export default function TourManagement() {
-  const [tours, setTours] = useLocalStorage("goticket_admin_tours", MOCK_TOURS);
+  const [tours, setTours] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   
   const [showModal, setShowModal] = useState(false);
@@ -39,10 +18,25 @@ export default function TourManagement() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const filteredTours = tours.filter(tour => 
-    tour.name.toLowerCase().includes(search.toLowerCase()) || 
-    tour.destination.toLowerCase().includes(search.toLowerCase())
-  );
+  const fetchTours = async () => {
+    setLoading(true);
+    try {
+      const res = await adminApi.getTours({ search });
+      setTours(res.data.items || res.data);
+    } catch (err) {
+      // Fallback to local storage or mock
+      const local = JSON.parse(window.localStorage.getItem('goticket_admin_tours') || 'null');
+      let data = local || MOCK_TOURS;
+      if (search) data = data.filter(t => t.name.toLowerCase().includes(search.toLowerCase()));
+      setTours(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchTours(); }, [search]);
+
+  const filteredTours = tours;
 
   const handleShowModal = (item = null) => {
     if (item) {
@@ -57,20 +51,40 @@ export default function TourManagement() {
     setShowModal(true);
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.price) {
       toast.error("Vui lòng điền tên tour và giá tour!");
       return;
     }
 
-    if (editItem) {
-      setTours(tours.map(t => t.id === editItem.id ? { ...formData, id: editItem.id } : t));
-      toast.success("Cập nhật tour thành công!");
-    } else {
-      const newId = 'tour-' + (tours.length + 1);
-      setTours([...tours, { ...formData, id: newId, img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&q=80&w=800", rating: 9.8, reviews: 10, booked: "10" }]);
-      toast.success("Thêm tour mới thành công!");
+    try {
+      if (editItem) {
+        await adminApi.updateTour(editItem.id, formData);
+        setTours(tours.map(t => t.id === editItem.id ? { ...formData, id: editItem.id } : t));
+        toast.success("Cập nhật tour thành công!");
+      } else {
+        const newTourData = { ...formData, img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&q=80&w=800", rating: 9.8, reviews: 10, booked: "10" };
+        const res = await adminApi.createTour(newTourData);
+        setTours([...tours, { ...newTourData, id: res.data.id }]);
+        toast.success("Thêm tour mới thành công!");
+      }
+    } catch (err) {
+      console.warn("API fallback to local", err);
+      // Fallback local
+      if (editItem) {
+        setTours(tours.map(t => t.id === editItem.id ? { ...formData, id: editItem.id } : t));
+      } else {
+        setTours([...tours, { ...formData, id: 'tour-' + Date.now(), img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&q=80&w=800", rating: 9.8, reviews: 10, booked: "10" }]);
+      }
+      toast.success("Lưu tạm thời do API không khả dụng!");
+      
+      const local = JSON.parse(window.localStorage.getItem('goticket_admin_tours') || 'null') || MOCK_TOURS;
+      if (editItem) {
+        window.localStorage.setItem('goticket_admin_tours', JSON.stringify(local.map(t => t.id === editItem.id ? { ...formData, id: editItem.id } : t)));
+      } else {
+        window.localStorage.setItem('goticket_admin_tours', JSON.stringify([...local, { ...formData, id: 'tour-' + Date.now(), img: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&q=80&w=800" }]));
+      }
     }
     setShowModal(false);
   };
@@ -80,9 +94,17 @@ export default function TourManagement() {
     setShowConfirm(true);
   };
 
-  const handleDelete = () => {
-    setTours(tours.filter((x) => x.id !== deleteId));
-    toast.success("Xóa tour thành công!");
+  const handleDelete = async () => {
+    try {
+      await adminApi.deleteTour(deleteId);
+      setTours(tours.filter((x) => x.id !== deleteId));
+      toast.success("Xóa tour thành công!");
+    } catch (err) {
+      setTours(tours.filter((x) => x.id !== deleteId));
+      const local = JSON.parse(window.localStorage.getItem('goticket_admin_tours') || 'null') || MOCK_TOURS;
+      window.localStorage.setItem('goticket_admin_tours', JSON.stringify(local.filter((x) => x.id !== deleteId)));
+      toast.success("Xóa tour thành công (Local)!");
+    }
     setShowConfirm(false);
   };
 

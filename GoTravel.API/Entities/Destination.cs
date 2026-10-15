@@ -1,3 +1,5 @@
+﻿using System.Collections.Generic;
+
 namespace GoTravel.API.Entities
 {
     public class Destination
@@ -18,5 +20,7 @@ namespace GoTravel.API.Entities
         public double Rating { get; set; }
         public bool Featured { get; set; }
         public string Status { get; set; } = "Active";
+
+        public ICollection<TourDestination> TourDestinations { get; set; } = new List<TourDestination>();
     }
 }

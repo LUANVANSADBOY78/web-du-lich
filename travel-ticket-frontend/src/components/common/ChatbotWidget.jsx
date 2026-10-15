@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { Bot, X, Send, MessageSquare, Minimize2, ChevronDown, User, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -50,34 +50,39 @@ const ChatbotWidget = () => {
   const handleSend = () => {
     if (!inputValue.trim()) return;
 
-    const userMessage = {
+    setMessages(prev => [...prev, {
       id: Date.now(),
       sender: 'user',
       text: inputValue,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+    }]);
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response
     setTimeout(() => {
-      let aiText = "Xin lỗi, hiện tại tôi chưa hiểu rõ ý của bạn. Bạn có thể nói rõ hơn về ngân sách hoặc điểm đến không?";
+      const lowerInput = inputValue.toLowerCase();
+      let aiText = "Dạ tôi chưa rõ ý bạn. Bạn đang tìm Tour du lịch, Vé vui chơi hay Khách sạn ạ? Bạn có thể chọn các gợi ý bên dưới hoặc mô tả chi tiết hơn nhé.";
       let aiTours = null;
-      let lowerInput = userMessage.text.toLowerCase();
 
-      if (lowerInput.includes('phú quốc') || lowerInput.includes('đà nẵng') || lowerInput.includes('gợi ý tour')) {
-        aiText = "Dựa trên yêu cầu của bạn, tôi tìm thấy một vài tour nổi bật rất phù hợp. Bạn có thể tham khảo nhé:";
-        aiTours = MOCK_TOURS_SUGGESTION;
-      } else if (lowerInput.includes('ngân sách')) {
-        aiText = "Tuyệt! Với ngân sách của bạn, chúng tôi có các chuyến đi 3N2Đ và 4N3Đ rất tối ưu. Bạn muốn đi biển hay lên núi?";
-      } else if (lowerInput.includes('chính sách')) {
-        aiText = "Chính sách hủy của GoTravel: Hủy trước 7 ngày (Hoàn 100%), Hủy trước 3 ngày (Hoàn 50%), Hủy trong vòng 3 ngày (Không hoàn tiền). Bạn cần hỗ trợ thêm thông tin gì không?";
-      } else if (lowerInput.includes('tìm vé vui chơi') || lowerInput.includes('vé vui chơi')) {
+      if (lowerInput.includes('xin chào') || lowerInput.includes('hello') || lowerInput.includes('chào')) {
+        aiText = "Chào bạn! Tôi là trợ lý AI của GoTravel. Tôi có thể giúp bạn tìm tour, vé vui chơi, hoặc khách sạn. Bạn cần hỗ trợ gì ạ?";
+      } else if (lowerInput.includes('tour') || lowerInput.includes('du lịch')) {
+        aiText = "Dạ, hệ thống đang có nhiều Tour hấp dẫn. Bạn muốn đi du lịch trong nước (Đà Nẵng, Phú Quốc...) hay nước ngoài (Thái Lan, Hàn Quốc...) ạ?";
+        if (lowerInput.includes('phú quốc')) {
+          aiText = "Đây là một số tour Phú Quốc đang có giá tốt nhất ạ:";
+          aiTours = [
+            { id: 1, name: "Tour Phú Quốc 3N2Đ: Khám Phá Nam Đảo", price: 2990000, img: "https://images.unsplash.com/photo-1596422846543-75c6ef08b241?w=400&q=80" },
+            { id: 2, name: "Tour Phú Quốc 4N3Đ: Trải Nghiệm VinWonders", price: 4590000, img: "https://images.unsplash.com/photo-1596422846543-75c6ef08b241?w=400&q=80" }
+          ];
+        }
+      } else if (lowerInput.includes('vé vui chơi') || lowerInput.includes('vé') || lowerInput.includes('cáp treo') || lowerInput.includes('vinwonders')) {
         aiText = "Hệ thống của chúng tôi có rất nhiều vé vui chơi hấp dẫn như Sun World Bà Nà Hills, VinWonders Phú Quốc, và Cáp treo Hòn Thơm. Bạn muốn đi chơi ở khu vực nào?";
       } else if (lowerInput.includes('tour trong nước')) {
         aiText = "Chúng tôi có các tour trong nước hấp dẫn trải dài từ Bắc chí Nam: Sapa, Hạ Long, Đà Nẵng, Nha Trang, Phú Quốc. Bạn thích đi vùng nào nhất?";
+      } else if (lowerInput.includes('giá') || lowerInput.includes('bao nhiêu')) {
+        aiText = "Giá các dịch vụ bên mình rất đa dạng, từ vài trăm nghìn đến vài triệu. Bạn quan tâm dịch vụ nào cụ thể để mình báo giá chính xác ạ?";
+      } else if (lowerInput.includes('khách sạn') || lowerInput.includes('phòng')) {
+        aiText = "Bên mình có liên kết với rất nhiều khách sạn và resort từ 3 sao đến 5 sao. Bạn muốn đặt phòng ở khu vực nào ạ?";
       }
 
       setMessages(prev => [...prev, {
@@ -232,3 +237,4 @@ const ChatbotWidget = () => {
 };
 
 export default ChatbotWidget;
+

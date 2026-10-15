@@ -1,28 +1,33 @@
 import { Link } from 'react-router-dom';
 import { Star, Heart, CheckCircle2, Zap, QrCode } from 'lucide-react';
 import { useState } from 'react';
+import { getProductImage } from '../../utils/imageUtils';
 
 const ProductCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   if (!product) return null;
+
+  // Lấy ảnh đúng cho sản phẩm - tự động theo location/category
+  const imgSrc = imgError
+    ? 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800'
+    : getProductImage(product);
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group relative">
       {/* Image container with ratio 4:3 */}
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
         <Link to={`/ticket/${product.id}`} className="block w-full h-full">
-          <img 
-            src={product.img} 
-            alt={product.name} 
+          <img
+            src={imgSrc}
+            alt={product.name}
             className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
             loading="lazy"
-            onError={(e) => {
-              e.target.src = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800";
-            }}
+            onError={() => setImgError(true)}
           />
         </Link>
-        
+
         {/* Top left badge */}
         {product.badge && (
           <div className="absolute top-3 left-3 bg-red-600 text-white font-bold text-[11px] px-2.5 py-1 rounded-lg shadow-sm tracking-wide z-10 pointer-events-none">
@@ -31,14 +36,14 @@ const ProductCard = ({ product }) => {
         )}
 
         {/* Top right heart favorite icon */}
-        <button 
+        <button
           onClick={(e) => {
             e.preventDefault();
             setIsFavorite(!isFavorite);
           }}
           className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all z-10 ${
-            isFavorite 
-              ? 'bg-red-500 text-white' 
+            isFavorite
+              ? 'bg-red-500 text-white'
               : 'bg-white/80 hover:bg-white text-slate-600 hover:text-red-500 shadow-sm'
           }`}
           title="Thêm vào yêu thích"
@@ -82,8 +87,8 @@ const ProductCard = ({ product }) => {
           ]).slice(0, 3).map((feat, idx) => (
             <div key={idx} className="flex items-center text-slate-600 truncate">
               <span className="mr-1.5 font-bold shrink-0">
-                {feat.startsWith("⚡") ? <Zap size={12} className="inline text-amber-500" /> : 
-                 feat.startsWith("▣") ? <QrCode size={12} className="inline text-sky-600" /> : 
+                {feat.startsWith("⚡") ? <Zap size={12} className="inline text-amber-500" /> :
+                 feat.startsWith("▣") ? <QrCode size={12} className="inline text-sky-600" /> :
                  <CheckCircle2 size={12} className="inline text-emerald-500" />}
               </span>
               <span className="truncate">{feat.replace(/^[⚡✓▣]\s*/, '')}</span>
@@ -107,8 +112,8 @@ const ProductCard = ({ product }) => {
                 </span>
               </div>
             </div>
-            
-            <Link 
+
+            <Link
               to={`/ticket/${product.id}`}
               className="bg-amber-50 text-amber-700 hover:bg-amber-500 hover:text-white border border-amber-200 hover:border-amber-500 text-xs font-bold py-1.5 px-3 rounded-lg transition-all shadow-sm shrink-0"
               style={{ whiteSpace: 'nowrap' }}

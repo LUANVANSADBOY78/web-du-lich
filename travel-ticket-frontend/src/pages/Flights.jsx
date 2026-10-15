@@ -32,7 +32,7 @@ const MOCK_FLIGHTS = [
   {
     id: 'f3',
     airline: 'Bamboo Airways',
-    airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Bamboo_Airways_logo.svg',
+    airlineLogo: '',
     flightNumber: 'QH-789',
     departure: { time: '14:00', airport: 'SGN', city: 'Hồ Chí Minh' },
     arrival: { time: '16:15', airport: 'HAN', city: 'Hà Nội' },
@@ -43,6 +43,46 @@ const MOCK_FLIGHTS = [
     class: 'Economy Saver'
   }
 ];
+
+const AirlineBadge = ({ airline, logo }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (logo && !hasError) {
+    return (
+      <img 
+        src={logo} 
+        alt={airline} 
+        className="max-h-full max-w-full object-contain" 
+        onError={() => setHasError(true)} 
+      />
+    );
+  }
+
+  if (airline === 'Vietjet Air') {
+    return (
+      <div className="flex items-center gap-1 font-black text-base italic tracking-tight">
+        <span className="bg-rose-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded">VJ</span>
+        <span className="text-rose-600">vietjet<span className="text-amber-500">Air</span></span>
+      </div>
+    );
+  }
+
+  if (airline === 'Bamboo Airways') {
+    return (
+      <div className="flex items-center gap-1.5 font-black text-sm tracking-tight text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200">
+        <span className="text-base">🎋</span>
+        <span>Bamboo <span className="text-sky-700">Airways</span></span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1.5 font-black text-sm tracking-tight text-sky-900 bg-sky-50 px-2.5 py-1 rounded-xl border border-sky-200">
+      <span className="text-base">🪷</span>
+      <span>Vietnam <span className="text-amber-500">Airlines</span></span>
+    </div>
+  );
+};
 
 const Flights = () => {
   const [tripType, setTripType] = useState('roundtrip'); // 'oneway' or 'roundtrip'
@@ -215,8 +255,8 @@ const Flights = () => {
               
               {/* Airline Info */}
               <div className="w-full md:w-32 flex flex-row md:flex-col items-center gap-3 shrink-0">
-                <div className="h-10 w-24 flex items-center justify-center">
-                  <img src={flight.airlineLogo} alt={flight.airline} className="max-h-full max-w-full object-contain" />
+                <div className="h-10 w-auto min-w-[96px] flex items-center justify-center">
+                  <AirlineBadge airline={flight.airline} logo={flight.airlineLogo} />
                 </div>
                 <div className="text-center">
                   <div className="font-bold text-slate-800 text-sm">{flight.airline}</div>

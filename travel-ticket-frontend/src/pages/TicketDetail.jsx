@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, MapPin, CheckCircle2, Zap, QrCode, ShieldAlert, Heart, Calendar, Plus, Minus, ShoppingCart, CreditCard, ChevronRight, Award } from 'lucide-react';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
+import TourReviewsSection from '../components/reviews/TourReviewsSection';
 import { toast } from 'react-toastify';
 
 const TicketDetail = () => {
@@ -363,14 +364,8 @@ const TicketDetail = () => {
             )}
 
             {activeTab === 'reviews' && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                  <div className="text-3xl font-black text-amber-500">{product.rating}</div>
-                  <div>
-                    <div className="font-bold text-slate-900">Được đánh giá Xuất Sắc</div>
-                    <div className="text-xs text-slate-500">Dựa trên {product.reviews} nhận xét từ khách hàng thực tế</div>
-                  </div>
-                </div>
+              <div className="pt-2">
+                <TourReviewsSection tour={{ id: `ticket-${product.id}`, name: product.name }} />
               </div>
             )}
           </div>

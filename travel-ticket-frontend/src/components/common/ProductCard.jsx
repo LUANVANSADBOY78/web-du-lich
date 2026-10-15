@@ -1,13 +1,33 @@
 import { Link } from 'react-router-dom';
-import { Star, Heart, CheckCircle2, Zap, QrCode } from 'lucide-react';
+import { Star, Heart, CheckCircle2, Zap, QrCode, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { getProductImage } from '../../utils/imageUtils';
+import { useFavorites } from '../../context/FavoritesContext';
 
-const ProductCard = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+const ProductCard = ({ product, onQuickView }) => {
   const [imgError, setImgError] = useState(false);
+  const favoritesCtx = useFavorites();
 
   if (!product) return null;
+
+  const isFavorited = favoritesCtx?.isFavorite
+    ? favoritesCtx.isFavorite(product.id, 'ticket')
+    : false;
+
+  const handleToggleFavorite = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (favoritesCtx?.toggle) {
+      favoritesCtx.toggle({
+        id: product.id,
+        type: 'ticket',
+        name: product.name,
+        price: product.price,
+        image: product.img,
+        location: product.location
+      });
+    }
+  };
 
   // Lấy ảnh đúng cho sản phẩm - tự động theo location/category
   const imgSrc = imgError
@@ -37,24 +57,36 @@ const ProductCard = ({ product }) => {
 
         {/* Top right heart favorite icon */}
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsFavorite(!isFavorite);
-          }}
+          onClick={handleToggleFavorite}
           className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all z-10 ${
-            isFavorite
-              ? 'bg-red-500 text-white'
+            isFavorited
+              ? 'bg-red-500 text-white shadow-md'
               : 'bg-white/80 hover:bg-white text-slate-600 hover:text-red-500 shadow-sm'
           }`}
-          title="Thêm vào yêu thích"
+          title={isFavorited ? 'Bỏ lưu yêu thích' : 'Lưu vào yêu thích'}
         >
-          <Heart size={16} className={isFavorite ? 'fill-current' : ''} />
+          <Heart size={16} className={isFavorited ? 'fill-current' : ''} />
         </button>
 
         {/* Location tag on bottom left of image */}
-        <div className="absolute bottom-2.5 left-2.5 bg-slate-900/70 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full pointer-events-none">
+        <div className="absolute bottom-2.5 left-2.5 bg-slate-900/75 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full pointer-events-none">
           {product.location}
         </div>
+
+        {/* Quick view floating button on hover */}
+        {onQuickView && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onQuickView(product);
+            }}
+            className="absolute bottom-2.5 right-2.5 bg-white/90 hover:bg-white text-slate-800 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1 z-10"
+            title="Xem nhanh loại vé"
+          >
+            <Eye size={12} /> Xem nhanh
+          </button>
+        )}
       </div>
 
       {/* Card Content Body */}
@@ -97,7 +129,7 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Price & Action Button */}
-        <div className="mt-auto pt-4 border-t border-slate-100 flex flex-col gap-3">
+        <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2">
           <div className="flex justify-between items-end">
             <div className="flex flex-col">
               <span className="text-[11px] text-slate-400 font-medium mb-0.5">Giá chỉ từ</span>
@@ -107,19 +139,33 @@ const ProductCard = ({ product }) => {
                     {product.oldPrice.toLocaleString('vi-VN')} đ
                   </span>
                 )}
-                <span className="text-[19px] font-black text-amber-600 tracking-tight leading-none">
+                <span className="text-[18px] font-black text-amber-600 tracking-tight leading-none">
                   {product.price.toLocaleString('vi-VN')} đ
                 </span>
               </div>
             </div>
 
-            <Link
-              to={`/ticket/${product.id}`}
-              className="bg-amber-50 text-amber-700 hover:bg-amber-500 hover:text-white border border-amber-200 hover:border-amber-500 text-xs font-bold py-1.5 px-3 rounded-lg transition-all shadow-sm shrink-0"
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              Xem chi tiết
-            </Link>
+            <div className="flex items-center gap-1.5">
+              {onQuickView && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onQuickView(product);
+                  }}
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-1.5 px-2.5 rounded-lg transition-all"
+                  title="Xem nhanh"
+                >
+                  <Eye size={13} />
+                </button>
+              )}
+              <Link
+                to={`/ticket/${product.id}`}
+                className="bg-amber-50 text-amber-700 hover:bg-amber-500 hover:text-white border border-amber-200 hover:border-amber-500 text-xs font-bold py-1.5 px-3 rounded-lg transition-all shadow-sm shrink-0"
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                Đặt vé
+              </Link>
+            </div>
           </div>
         </div>
       </div>

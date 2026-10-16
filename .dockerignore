@@ -1,0 +1,8 @@
+node_modules
+travel-ticket-frontend/node_modules
+travel-ticket-frontend/dist
+GoTravel.API/bin
+GoTravel.API/obj
+.git
+.vs
+.vscode

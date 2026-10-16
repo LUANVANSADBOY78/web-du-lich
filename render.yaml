@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: web-du-lich
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 80

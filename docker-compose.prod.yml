@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gotravel-sqlserver
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${DB_PASSWORD:-YourStrong@Password123}"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - gotravel-net
+
+  backend:
+    image: ${DOCKER_USER:-luanvansadboy78}/gotravel-backend:latest
+    container_name: gotravel-backend
+    restart: always
+    ports:
+      - "5106:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=GoTravelDB;User Id=sa;Password=${DB_PASSWORD:-YourStrong@Password123};TrustServerCertificate=True;
+      - JwtSettings__Secret=${JWT_SECRET:-SecretKeyDuLich12345678901234567890}
+    depends_on:
+      - sqlserver
+    networks:
+      - gotravel-net
+
+  frontend:
+    image: ${DOCKER_USER:-luanvansadboy78}/gotravel-frontend:latest
+    container_name: gotravel-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - gotravel-net
+
+networks:
+  gotravel-net:
+    driver: bridge
+
+volumes:
+  sqlserver-data:

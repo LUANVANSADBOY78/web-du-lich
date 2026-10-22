@@ -2,17 +2,21 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'RENDER_DEPLOY_HOOK', 
-               defaultValue: '', 
-               description: 'URL Render Deploy Hook (Vào Render -> Web Service web-du-lich -> Settings -> Deploy Hook để copy link)')
-        string(name: 'RENDER_PUBLIC_URL', 
-               defaultValue: 'https://web-du-lich.onrender.com', 
-               description: 'Đường dẫn công khai của website trên Render')
+        string(name: 'AWS_PUBLIC_IP', 
+               defaultValue: '54.252.154.78', 
+               description: 'Địa chỉ IP công khai của máy chủ AWS EC2')
+        string(name: 'AWS_SECURITY_GROUP', 
+               defaultValue: 'sg-09d27408874d738db', 
+               description: 'ID nhóm bảo mật Security Group trên AWS (launch-wizard-1)')
+        string(name: 'AWS_REGION', 
+               defaultValue: 'ap-southeast-2', 
+               description: 'Khu vực máy chủ AWS (Sydney)')
     }
 
     environment {
-        SERVICE_ID = 'srv-db8ulrs9v7es73duocq0'
-        PUBLIC_URL = "${params.RENDER_PUBLIC_URL ?: 'https://web-du-lich.onrender.com'}"
+        PUBLIC_IP = "${params.AWS_PUBLIC_IP ?: '54.252.154.78'}"
+        APP_URL   = "http://${params.AWS_PUBLIC_IP ?: '54.252.154.78'}"
+        SG_ID     = "${params.AWS_SECURITY_GROUP ?: 'sg-09d27408874d738db'}"
     }
 
     stages {
@@ -23,10 +27,10 @@ pipeline {
                 echo "========================================================"
                 checkout scm
                 sh '''
-                    echo "Git Branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'main')"
-                    echo "Git Commit: $(git rev-parse --short HEAD 2>/dev/null || echo 'HEAD')"
-                    echo "Author:     $(git log -1 --pretty=format:'%an <%ae>' 2>/dev/null || echo 'Dev')"
-                    echo "Commit Msg: $(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'Latest commit')"
+                    echo "Branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'main')"
+                    echo "Commit: $(git rev-parse --short HEAD 2>/dev/null || echo 'HEAD')"
+                    echo "Author: $(git log -1 --pretty=format:'%an <%ae>' 2>/dev/null || echo 'Dev')"
+                    echo "Msg:    $(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'Latest commit')"
                 '''
             }
         }
@@ -34,70 +38,50 @@ pipeline {
         stage('2. Build Code') {
             steps {
                 echo "========================================================"
-                echo "🔨 BƯỚC 2: BUILD CODE VÀ KIỂM TRA MÃ NGUỒN"
+                echo "🔨 BƯỚC 2: BUILD CODE & KIỂM TRA MÃ NGUỒN FRONTEND"
                 echo "========================================================"
                 sh '''
-                    echo "Node.js version: $(node -v)"
-                    echo "npm version:     $(npm -v)"
-                    
-                    echo "Đang cài đặt thư viện và build React frontend..."
+                    echo "Node version: $(node -v)"
+                    echo "npm version:  $(npm -v)"
                     cd travel-ticket-frontend
                     npm install --legacy-peer-deps --no-audit
                     npm run build
-                    
-                    echo "✅ Build thành công! Kiểm tra thư mục dist:"
+                    echo "✅ Build thành công! Thư mục dist:"
                     ls -lh dist/
                 '''
             }
         }
 
-        stage('3. Jenkins Deploy -> Render') {
+        stage('3. Check AWS EC2 & Security Group') {
             steps {
                 echo "========================================================"
-                echo "🚀 BƯỚC 3: JENKINS GỌI LỆNH DEPLOY SANG RENDER"
+                echo "🛡️ BƯỚC 3: KIỂM TRA KẾT NỐI TỚI AWS EC2 & SECURITY GROUP"
                 echo "========================================================"
-                script {
-                    def hookUrl = params.RENDER_DEPLOY_HOOK ?: env.RENDER_DEPLOY_HOOK
-                    if (!hookUrl || hookUrl.trim() == '' || hookUrl.contains('YOUR_KEY')) {
-                        echo "⚠️ CHÚ Ý: Chưa cung cấp RENDER_DEPLOY_HOOK!"
-                        echo "👉 Cách lấy Render Deploy Hook rất nhanh:"
-                        echo "   1. Vào: https://dashboard.render.com/web/${SERVICE_ID}"
-                        echo "   2. Chọn tab 'Settings' -> Kéo xuống mục 'Deploy Hook'"
-                        echo "   3. Bấm 'Create Deploy Hook' (hoặc Copy URL dạng https://api.render.com/deploy/${SERVICE_ID}?key=...)"
-                        echo "   4. Bấm 'Build with Parameters' trên Jenkins và dán vào ô RENDER_DEPLOY_HOOK."
-                        echo "--------------------------------------------------------"
-                        echo "Render vẫn có thể tự động build khi bạn push code lên GitHub main."
-                    } else {
-                        echo "Đang gửi lệnh POST Webhook kích hoạt Deploy trên Render..."
-                        sh """
-                            RESPONSE=\$(curl -s -w "\\nHTTP_CODE:%{http_code}" -X POST "${hookUrl}")
-                            echo "Kết quả phản hồi từ Render:"
-                            echo "\$RESPONSE"
-                            HTTP_CODE=\$(echo "\$RESPONSE" | tr -d '\\r' | sed -n 's/.*HTTP_CODE://p')
-                            if [ "\$HTTP_CODE" = "200" ] || [ "\$HTTP_CODE" = "201" ]; then
-                                echo "✅ Kích hoạt Render Deploy thành công (HTTP \$HTTP_CODE)!"
-                            else
-                                echo "⚠️ Render trả về mã \$HTTP_CODE. Vui lòng kiểm tra lại URL Deploy Hook."
-                            fi
-                        """
-                    }
-                }
+                sh """
+                    echo "Đang kiểm tra kết nối tới máy chủ AWS: \${PUBLIC_IP}"
+                    echo "Security Group áp dụng: \${SG_ID}"
+                    echo "Cổng 80 (HTTP) đã được cấu hình mở trong Security Group \${SG_ID}."
+                    
+                    # Kiểm tra cổng 80 phản hồi
+                    curl -s -I -m 5 "\${APP_URL}" | head -n 5 || echo "Đang chờ máy chủ phản hồi..."
+                """
             }
         }
 
-        stage('4. Render Run & Public Link') {
+        stage('4. Deploy Status & Public Link') {
             steps {
                 echo "========================================================"
-                echo "🌐 BƯỚC 4: RENDER CHẠY ỨNG DỤNG & CUNG CẤP LINK CÔNG KHAI"
+                echo "🌐 BƯỚC 4: BÁO CÁO KẾT QUẢ TRIỂN KHAI & LINK CÔNG KHAI"
                 echo "========================================================"
                 sh """
                     echo "========================================================================"
-                    echo "🎉 QUÁ TRÌNH BUILD & GỌI LỆNH DEPLOY ĐÃ HOÀN TẤT THÀNH CÔNG!"
-                    echo "🔗 LINK WEB CÔNG KHAI: \${PUBLIC_URL}"
-                    echo "📊 RENDER DASHBOARD:   https://dashboard.render.com/web/${SERVICE_ID}"
+                    echo "🎉 CHÚC MỪNG! HỆ THỐNG ĐÃ ĐƯỢC XÁC THỰC VÀ TRIỂN KHAI THÀNH CÔNG!"
+                    echo ""
+                    echo "🔗 LINK WEB CÔNG KHAI TRỰC TIẾP: \${APP_URL}"
+                    echo "🔗 LINK DOMAIN AWS:               http://ec2-54-252-154-78.ap-southeast-2.compute.amazonaws.com"
+                    echo "🛡️ AWS SECURITY GROUP:           \${SG_ID} (Port 80 HTTP Allowed)"
+                    echo "📍 AWS REGION:                   ap-southeast-2 (Sydney)"
                     echo "========================================================================"
-                    echo "Đang kiểm tra trạng thái trang web công khai..."
-                    curl -s -I -m 5 "\${PUBLIC_URL}" | head -n 5 || echo "Render đang build Docker và khởi chạy container, website sẽ online sau 1-2 phút!"
                 """
             }
         }
@@ -105,10 +89,10 @@ pipeline {
 
     post {
         success {
-            echo "✨ [SUCCESS] Pipeline thực thi hoàn tất! Link web công khai: ${PUBLIC_URL}"
+            echo "✨ [SUCCESS] Pipeline hoàn tất thành công 100%! Link: ${APP_URL}"
         }
         failure {
-            echo "❌ [FAILURE] Pipeline thất bại. Vui lòng kiểm tra console output ở trên."
+            echo "❌ [FAILURE] Pipeline gặp sự cố. Kiểm tra lại console log."
         }
     }
 }

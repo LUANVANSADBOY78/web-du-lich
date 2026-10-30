@@ -32,6 +32,7 @@ const LIVE_PATHS = new Set([
   '/admin/customers',
   '/admin/vouchers',
   '/admin/reviews',
+  '/admin/blog',
   '/admin/support-tickets',
   '/admin/reports',
   '/admin/activity-logs',

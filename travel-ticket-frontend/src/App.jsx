@@ -19,6 +19,7 @@ import Cart from "./pages/Cart";
 import Favorites from "./pages/Favorites";
 import Profile from "./pages/Profile";
 import AITripPlanner from "./pages/AITripPlanner";
+import Blog from "./pages/Blog";
 
 import AdminLayout from "./admin/components/AdminLayout";
 import Dashboard from "./admin/Dashboard";
@@ -78,7 +79,8 @@ function App() {
         <Route path="trains" element={<Trains />} />
         <Route path="ve-tau" element={<Trains />} />
         <Route path="combos" element={<PlaceholderPage title="Combo Du Lịch" />} />
-        <Route path="blog" element={<PlaceholderPage title="Blog Du Lịch" />} />
+        <Route path="blog" element={<Blog />} />
+        <Route path="cam-nang" element={<Blog />} />
         <Route path="compare-tours" element={<PlaceholderPage title="So sánh Tour" />} />
         <Route path="my-trips" element={<PlaceholderPage title="My Trips" />} />
         <Route path="recently-viewed" element={<PlaceholderPage title="Đã Xem Gần Đây" />} />
@@ -147,7 +149,7 @@ function App() {
         {/* CONTENT */}
         <Route path="reviews" element={<Reviews />} />
         <Route path="qna" element={<PlaceholderPage title="Q&A" />} />
-        <Route path="blog" element={<PlaceholderPage title="Blog" />} />
+        <Route path="blog" element={<Blog />} />
         <Route path="faq" element={<PlaceholderPage title="FAQ" />} />
 
         {/* SUPPORT */}

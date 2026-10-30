@@ -138,6 +138,15 @@ const Header = () => {
           </NavLink>
 
           <NavLink 
+            to="/blog" 
+            className={({ isActive }) => 
+              `px-3.5 py-2 rounded-lg transition ${isActive ? 'text-sky-600 bg-sky-50 font-bold' : 'hover:text-sky-600 hover:bg-slate-50'}`
+            }
+          >
+            Cẩm Nang & Review
+          </NavLink>
+
+          <NavLink 
             to="/offers" 
             className="px-3.5 py-2 rounded-lg text-amber-600 hover:bg-amber-50 font-bold transition flex items-center gap-1"
           >

@@ -2,6 +2,12 @@
 # SCRIPT NAP DU LIEU MAU CHUYEN NGHIEP VAO SQL SERVER - DATABASE GOTRAVELDB
 # ==============================================================================
 
+# Bat che do UTF-8 toan dien tren PowerShell de khong bao gio bi loi font tieng Viet
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+chcp 65001 | Out-Null
+
 $connStr = "Server=localhost;Database=GoTravelDB;Trusted_Connection=True;TrustServerCertificate=True;"
 
 try {

@@ -3,6 +3,12 @@
 # Du an: GoTravel | Database: GoTravelDB
 # ==============================================================================
 
+# Bat che do UTF-8 toan dien tren PowerShell de khong bao gio bi loi font tieng Viet
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+chcp 65001 | Out-Null
+
 $connStr = "Server=localhost;Database=GoTravelDB;Trusted_Connection=True;TrustServerCertificate=True;"
 
 try {
@@ -99,9 +105,9 @@ try {
     $cmd.CommandText = @"
         SELECT 
             u.Id,
-            u.FullName AS [HoVaTen],
+            u.FullName AS [HoTen],
             u.Email,
-            ISNULL(u.PhoneNumber, 'N/A') AS [SoDienThoai],
+            ISNULL(u.PhoneNumber, 'N/A') AS [DienThoai],
             ISNULL(r.Name, 'No Role') AS [VaiTro],
             CASE WHEN u.IsActive = 1 THEN N'Hoạt động' ELSE N'Khóa' END AS [TrangThai],
             CONVERT(VARCHAR(10), u.CreatedAt, 103) AS [NgayTao]
@@ -115,12 +121,12 @@ try {
 
     $usersTable | Format-Table -Property @(
         @{Label="ID"; Expression={$_.Id}; Width=4},
-        @{Label="Họ và Tên"; Expression={$_.HoVaTen}; Width=32},
+        @{Label="Ho Va Ten"; Expression={$_.HoTen}; Width=33},
         @{Label="Email"; Expression={$_.Email}; Width=25},
-        @{Label="Số Điện Thoại"; Expression={$_.SoDienThoai}; Width=14},
-        @{Label="Vai Trò (Role)"; Expression={$_.VaiTro}; Width=15},
-        @{Label="Trạng Thái"; Expression={$_.TrangThai}; Width=12},
-        @{Label="Ngày Tạo"; Expression={$_.NgayTao}; Width=12}
+        @{Label="So Dien Thoai"; Expression={$_.DienThoai}; Width=15},
+        @{Label="Vai Tro (Role)"; Expression={$_.VaiTro}; Width=15},
+        @{Label="Trang Thai"; Expression={$_.TrangThai}; Width=12},
+        @{Label="Ngay Tao"; Expression={$_.NgayTao}; Width=12}
     )
 
     # --------------------------------------------------------------------------
@@ -151,8 +157,8 @@ try {
     $adapter.Fill($allTables) | Out-Null
 
     $allTables | Format-Table -Property @(
-        @{Label="Tên Bảng (Table Name)"; Expression={$_.TenBang}; Width=35},
-        @{Label="Số Lượng Dòng (Row Count)"; Expression={$_.SoLuongBanGhi}; Width=25}
+        @{Label="Ten Bang (Table Name)"; Expression={$_.TenBang}; Width=32},
+        @{Label="So Luong Dong (Rows)"; Expression={$_.SoLuongBanGhi}; Width=22}
     )
 
     # --------------------------------------------------------------------------
@@ -197,11 +203,11 @@ try {
         $adapter.Fill($schemaTable) | Out-Null
 
         $schemaTable | Format-Table -Property @(
-            @{Label="Tên Cột (Column)"; Expression={$_.TenCot}; Width=22},
-            @{Label="Kiểu Dữ Liệu (Type)"; Expression={$_.KieuDuLieu}; Width=16},
-            @{Label="Độ Dài"; Expression={$_.DoDai}; Width=10},
-            @{Label="Cho Phép Null"; Expression={$_.Nullable}; Width=15},
-            @{Label="Khóa (Key)"; Expression={$_.KhoaChinh}; Width=15}
+            @{Label="Ten Cot (Column)"; Expression={$_.TenCot}; Width=22},
+            @{Label="Kieu Du Lieu (Type)"; Expression={$_.KieuDuLieu}; Width=16},
+            @{Label="Do Dai"; Expression={$_.DoDai}; Width=10},
+            @{Label="Cho Phep Null"; Expression={$_.Nullable}; Width=15},
+            @{Label="Khoa (Key)"; Expression={$_.KhoaChinh}; Width=15}
         )
     }
 

@@ -46,6 +46,12 @@ import ActivityLogs from "./admin/ActivityLogs";
 
 import TourItineraries from "./admin/TourItineraries";
 import QRCheckin from "./admin/QRCheckin";
+import Inventory from "./admin/Inventory";
+import Payments from "./admin/Payments";
+import Refunds from "./admin/Refunds";
+import Waitlist from "./admin/Waitlist";
+import TourInventory from "./admin/TourInventory";
+import TicketTypes from "./admin/TicketTypes";
 
 const PlaceholderPage = ({ title }) => (
   <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 m-6">
@@ -105,24 +111,24 @@ function App() {
         <Route path="destinations" element={<Destinations />} />
         <Route path="tour-itineraries" element={<TourItineraries />} />
         <Route path="tour-departures" element={<TourDepartures />} />
-        <Route path="tour-inventory" element={<PlaceholderPage title="Kho chỗ Tour" />} />
+        <Route path="tour-inventory" element={<TourInventory />} />
         <Route path="tour-guides" element={<TourGuides />} />
         <Route path="tour-reports" element={<TourReports />} />
 
         {/* VÉ VUI CHƠI */}
         <Route path="attractions" element={<Attractions />} />
         <Route path="products" element={<Attractions />} />
-        <Route path="ticket-types" element={<PlaceholderPage title="Loại vé" />} />
-        <Route path="inventory" element={<PlaceholderPage title="Kho vé" />} />
+        <Route path="ticket-types" element={<TicketTypes />} />
+        <Route path="inventory" element={<Inventory />} />
         <Route path="checkin" element={<QRCheckin />} />
         <Route path="tickets" element={<TicketManagement />} />
 
         {/* BOOKING */}
         <Route path="tour-bookings" element={<TourBookings />} />
         <Route path="bookings" element={<BookingManagement />} />
-        <Route path="payments" element={<PlaceholderPage title="Thanh toán" />} />
-        <Route path="refunds" element={<PlaceholderPage title="Refund & Hoàn tiền" />} />
-        <Route path="waitlist" element={<PlaceholderPage title="Waitlist" />} />
+        <Route path="payments" element={<Payments />} />
+        <Route path="refunds" element={<Refunds />} />
+        <Route path="waitlist" element={<Waitlist />} />
 
         {/* AI CHATBOT */}
         <Route path="ai-chat" element={<AIChatConversations />} />

@@ -43,5 +43,5 @@ scratch*
 Thumbs.db
 .idea/
 .vscode/*
-!.vscode/extensions.json
-
+# Nested repo
+web-du-lich/

@@ -44,7 +44,7 @@ namespace GoTravel.API.Controllers
                 }
             }
 
-            ChatConversation conversation;
+            ChatConversation? conversation;
 
             if (request.ConversationId.HasValue && request.ConversationId > 0)
             {

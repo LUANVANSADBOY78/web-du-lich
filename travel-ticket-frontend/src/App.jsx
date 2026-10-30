@@ -60,6 +60,14 @@ import Membership from "./admin/Membership";
 import Combos from "./admin/Combos";
 import Banners from "./admin/Banners";
 import Settings from "./admin/Settings";
+import ReferralProgram from "./admin/ReferralProgram";
+import StaffManagement from "./admin/StaffManagement";
+import PartnerManagement from "./admin/PartnerManagement";
+import TourGuideUsers from "./admin/TourGuideUsers";
+import QnAManagement from "./admin/QnAManagement";
+import FAQManagement from "./admin/FAQManagement";
+import LiveChatAdmin from "./admin/LiveChatAdmin";
+import RolesManagement from "./admin/RolesManagement";
 
 const PlaceholderPage = ({ title }) => (
   <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 m-6">
@@ -152,27 +160,27 @@ function App() {
         <Route path="combos" element={<Combos />} />
         <Route path="banners" element={<Banners />} />
         <Route path="membership" element={<Membership />} />
-        <Route path="referral" element={<PlaceholderPage title="Referral Program" />} />
+        <Route path="referral" element={<ReferralProgram />} />
 
         {/* USERS */}
         <Route path="customers" element={<Customers />} />
-        <Route path="staff" element={<PlaceholderPage title="Nhân viên - Staff" />} />
-        <Route path="partners" element={<PlaceholderPage title="Đối tác - Partners" />} />
-        <Route path="tour-guides-users" element={<PlaceholderPage title="Tour Guides" />} />
+        <Route path="staff" element={<StaffManagement />} />
+        <Route path="partners" element={<PartnerManagement />} />
+        <Route path="tour-guides-users" element={<TourGuideUsers />} />
 
         {/* CONTENT */}
         <Route path="reviews" element={<Reviews />} />
-        <Route path="qna" element={<PlaceholderPage title="Q&A" />} />
+        <Route path="qna" element={<QnAManagement />} />
         <Route path="blog" element={<Blog />} />
-        <Route path="faq" element={<PlaceholderPage title="FAQ" />} />
+        <Route path="faq" element={<FAQManagement />} />
 
         {/* SUPPORT */}
         <Route path="support-tickets" element={<SupportTickets />} />
-        <Route path="live-chat" element={<PlaceholderPage title="Live Chat" />} />
+        <Route path="live-chat" element={<LiveChatAdmin />} />
 
         {/* SYSTEM */}
         <Route path="reports" element={<Reports />} />
-        <Route path="roles" element={<PlaceholderPage title="Phân quyền - Roles & Permissions" />} />
+        <Route path="roles" element={<RolesManagement />} />
         <Route path="activity-logs" element={<ActivityLogs />} />
         <Route path="settings" element={<Settings />} />
       </Route>

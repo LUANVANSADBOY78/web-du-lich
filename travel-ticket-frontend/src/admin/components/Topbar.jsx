@@ -1,10 +1,12 @@
-import { Menu, Search, Bell, Maximize, User } from "lucide-react";
+import { Menu, Search, Bell, Maximize, User, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 function Topbar({ toggleSidebar }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const { theme, toggleTheme, isDark } = useTheme();
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -17,7 +19,7 @@ function Topbar({ toggleSidebar }) {
   };
 
   return (
-    <header className="h-16 bg-white shadow-sm border-b border-slate-200 px-4 flex items-center justify-between shrink-0 z-40">
+    <header className="h-16 bg-white shadow-sm border-b border-slate-200 px-4 flex items-center justify-between shrink-0 z-40 transition-colors">
       <div className="flex items-center gap-4">
         <button onClick={toggleSidebar} className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
           <Menu size={20} />
@@ -29,6 +31,16 @@ function Topbar({ toggleSidebar }) {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
+        {/* Nút chuyển chế độ Sáng / Tối */}
+        <button 
+          onClick={toggleTheme} 
+          className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 dark:text-amber-400 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5 text-xs font-semibold" 
+          title={isDark ? "Chuyển sang giao diện Sáng" : "Chuyển sang giao diện Tối"}
+        >
+          {isDark ? <Sun size={19} className="text-amber-400" /> : <Moon size={19} className="text-slate-600" />}
+          <span className="hidden lg:inline">{isDark ? "Sáng" : "Tối"}</span>
+        </button>
+
         <button onClick={toggleFullScreen} className="hidden md:flex p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors" title="Toàn màn hình">
           <Maximize size={18} />
         </button>

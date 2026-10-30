@@ -43,6 +43,9 @@ import SupportTickets from "./admin/SupportTickets";
 import Reports from "./admin/Reports";
 import ActivityLogs from "./admin/ActivityLogs";
 
+import TourItineraries from "./admin/TourItineraries";
+import QRCheckin from "./admin/QRCheckin";
+
 const PlaceholderPage = ({ title }) => (
   <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 m-6">
     <h2 className="text-2xl font-black text-slate-900 mb-2">{title}</h2>
@@ -98,7 +101,7 @@ function App() {
         <Route path="tours" element={<TourManagement />} />
         <Route path="tour-categories" element={<TourCollections />} />
         <Route path="destinations" element={<Destinations />} />
-        <Route path="tour-itineraries" element={<PlaceholderPage title="Lịch trình Tour" />} />
+        <Route path="tour-itineraries" element={<TourItineraries />} />
         <Route path="tour-departures" element={<TourDepartures />} />
         <Route path="tour-inventory" element={<PlaceholderPage title="Kho chỗ Tour" />} />
         <Route path="tour-guides" element={<TourGuides />} />
@@ -109,7 +112,7 @@ function App() {
         <Route path="products" element={<Attractions />} />
         <Route path="ticket-types" element={<PlaceholderPage title="Loại vé" />} />
         <Route path="inventory" element={<PlaceholderPage title="Kho vé" />} />
-        <Route path="checkin" element={<PlaceholderPage title="QR Check-in" />} />
+        <Route path="checkin" element={<QRCheckin />} />
         <Route path="tickets" element={<TicketManagement />} />
 
         {/* BOOKING */}

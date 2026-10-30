@@ -1,12 +1,14 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Heart, Ticket, Phone, HelpCircle, User, ChevronDown, LogOut, QrCode, Compass, Sparkles, Flame, ShieldAlert } from 'lucide-react';
+import { Heart, Ticket, Phone, HelpCircle, User, ChevronDown, LogOut, QrCode, Compass, Sparkles, Flame, ShieldAlert, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showTourSubmenu, setShowTourSubmenu] = useState(false);
+  const { theme, toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -164,6 +166,15 @@ const Header = () => {
           >
             <Ticket size={21} />
           </Link>
+
+          {/* Theme Toggle (Sáng / Tối) */}
+          <button 
+            onClick={toggleTheme}
+            className="p-2 text-slate-600 hover:text-amber-500 hover:bg-slate-100 rounded-full transition relative"
+            title={isDark ? "Chuyển sang giao diện Sáng" : "Chuyển sang giao diện Tối"}
+          >
+            {isDark ? <Sun size={21} className="text-amber-400" /> : <Moon size={21} className="text-slate-600" />}
+          </button>
 
           {isLoggedIn ? (
             <div className="relative">

@@ -61,8 +61,9 @@ pipeline {
                     curl -s -I -m 5 "http://54.252.154.78" | head -n 5 || echo "Máy chủ đang phục vụ tốt."
                     echo "========================================================================"
                     echo "🎉 CHÚC MỪNG! TOÀN BỘ QUY TRÌNH CI/CD HOÀN THÀNH XUẤT SẮC 100%!"
-                    echo "🔗 LINK WEB CÔNG KHAI: http://54.252.154.78"
-                    echo "🔗 LINK AWS DNS:        http://ec2-54-252-154-78.ap-southeast-2.compute.amazonaws.com"
+                    echo "🔗 LINK WEB CÔNG KHAI (Cloudflare): https://appreciate-rpg-zoloft-intermediate.trycloudflare.com/"
+                    echo "🔗 LINK MÁY CHỦ AWS EC2:           http://ec2-54-252-154-78.ap-southeast-2.compute.amazonaws.com/"
+                    echo "🔗 LINK IP TRỰC TIẾP:              http://54.252.154.78/"
                     echo "========================================================================"
                 '''
             }
@@ -71,7 +72,9 @@ pipeline {
 
     post {
         success {
-            echo "✨ [SUCCESS] Pipeline hoàn tất thành công 100%! Web công khai: http://54.252.154.78"
+            echo "✨ [SUCCESS] Pipeline hoàn tất thành công 100%!"
+            echo "🌐 Cloudflare Link: https://appreciate-rpg-zoloft-intermediate.trycloudflare.com/"
+            echo "☁️ AWS EC2 Link:   http://ec2-54-252-154-78.ap-southeast-2.compute.amazonaws.com/"
         }
         failure {
             echo "❌ [FAILURE] Pipeline gặp lỗi. Vui lòng kiểm tra lại log."

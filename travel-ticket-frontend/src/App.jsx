@@ -52,6 +52,14 @@ import Refunds from "./admin/Refunds";
 import Waitlist from "./admin/Waitlist";
 import TourInventory from "./admin/TourInventory";
 import TicketTypes from "./admin/TicketTypes";
+import AITripPlannerAdmin from "./admin/AITripPlannerAdmin";
+import AIFeedback from "./admin/AIFeedback";
+import AIStats from "./admin/AIStats";
+import FlashSales from "./admin/FlashSales";
+import Membership from "./admin/Membership";
+import Combos from "./admin/Combos";
+import Banners from "./admin/Banners";
+import Settings from "./admin/Settings";
 
 const PlaceholderPage = ({ title }) => (
   <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 m-6">
@@ -134,16 +142,16 @@ function App() {
         <Route path="ai-chat" element={<AIChatConversations />} />
         <Route path="ai-knowledge" element={<AIKnowledgeBase />} />
         <Route path="ai-settings" element={<AISettings />} />
-        <Route path="ai-trip-planner" element={<PlaceholderPage title="AI Trip Planner Admin" />} />
-        <Route path="ai-feedback" element={<PlaceholderPage title="Feedback AI" />} />
-        <Route path="ai-stats" element={<PlaceholderPage title="Thống kê AI" />} />
+        <Route path="ai-trip-planner" element={<AITripPlannerAdmin />} />
+        <Route path="ai-feedback" element={<AIFeedback />} />
+        <Route path="ai-stats" element={<AIStats />} />
 
         {/* MARKETING */}
         <Route path="vouchers" element={<Vouchers />} />
-        <Route path="flash-sales" element={<PlaceholderPage title="Flash Sale" />} />
-        <Route path="combos" element={<PlaceholderPage title="Combo du lịch" />} />
-        <Route path="banners" element={<PlaceholderPage title="Banner & Quảng cáo" />} />
-        <Route path="membership" element={<PlaceholderPage title="Membership" />} />
+        <Route path="flash-sales" element={<FlashSales />} />
+        <Route path="combos" element={<Combos />} />
+        <Route path="banners" element={<Banners />} />
+        <Route path="membership" element={<Membership />} />
         <Route path="referral" element={<PlaceholderPage title="Referral Program" />} />
 
         {/* USERS */}
@@ -166,7 +174,7 @@ function App() {
         <Route path="reports" element={<Reports />} />
         <Route path="roles" element={<PlaceholderPage title="Phân quyền - Roles & Permissions" />} />
         <Route path="activity-logs" element={<ActivityLogs />} />
-        <Route path="settings" element={<PlaceholderPage title="Cài đặt hệ thống" />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
 
       {/* Fallback Catch-All Route */}

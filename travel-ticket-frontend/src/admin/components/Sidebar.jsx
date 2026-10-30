@@ -35,13 +35,21 @@ const LIVE_PATHS = new Set([
   '/admin/ai-chat',
   '/admin/ai-knowledge',
   '/admin/ai-settings',
+  '/admin/ai-trip-planner',
+  '/admin/ai-feedback',
+  '/admin/ai-stats',
   '/admin/customers',
   '/admin/vouchers',
+  '/admin/flash-sales',
+  '/admin/combos',
+  '/admin/banners',
+  '/admin/membership',
   '/admin/reviews',
   '/admin/blog',
   '/admin/support-tickets',
   '/admin/reports',
   '/admin/activity-logs',
+  '/admin/settings',
 ]);
 
 function SidebarItem({ item, collapsed }) {
